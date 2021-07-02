@@ -6,15 +6,33 @@ use Psr\SimpleCache\CacheInterface;
 
 final class UnleashConfiguration
 {
-    private ?CacheInterface $cache = null;
+    /**
+     * @var \Psr\SimpleCache\CacheInterface|null
+     */
+    private $cache;
 
-    private int $ttl = 30;
+    /**
+     * @var int
+     */
+    private $ttl = 30;
+    /**
+     * @var string
+     */
+    private $url;
+    /**
+     * @var string
+     */
+    private $appName;
+    /**
+     * @var string
+     */
+    private $instanceId;
 
-    public function __construct(
-        private string $url,
-        private string $appName,
-        private string $instanceId
-    ) {
+    public function __construct(string $url, string $appName, string $instanceId)
+    {
+        $this->url = $url;
+        $this->appName = $appName;
+        $this->instanceId = $instanceId;
     }
 
     public function getCache(): ?CacheInterface
@@ -47,35 +65,50 @@ final class UnleashConfiguration
         return $this->ttl;
     }
 
-    public function setCache(?CacheInterface $cache): self
+    /**
+     * @return $this
+     */
+    public function setCache(?CacheInterface $cache)
     {
         $this->cache = $cache;
 
         return $this;
     }
 
-    public function setTtl(int $ttl): self
+    /**
+     * @return $this
+     */
+    public function setTtl(int $ttl)
     {
         $this->ttl = $ttl;
 
         return $this;
     }
 
-    public function setUrl(string $url): self
+    /**
+     * @return $this
+     */
+    public function setUrl(string $url)
     {
         $this->url = $url;
 
         return $this;
     }
 
-    public function setAppName(string $appName): self
+    /**
+     * @return $this
+     */
+    public function setAppName(string $appName)
     {
         $this->appName = $appName;
 
         return $this;
     }
 
-    public function setInstanceId(string $instanceId): self
+    /**
+     * @return $this
+     */
+    public function setInstanceId(string $instanceId)
     {
         $this->instanceId = $instanceId;
 
