@@ -9,13 +9,24 @@ final class UnleashContext
     /**
      * @var array<string,string>
      */
-    private array $customContext = [];
-
-    public function __construct(
-        private ?string $currentUserId = null,
-        private ?string $ipAddress = null,
-        private ?string $sessionId = null,
-    ) {
+    private $customContext = [];
+    /**
+     * @var string|null
+     */
+    private $currentUserId;
+    /**
+     * @var string|null
+     */
+    private $ipAddress;
+    /**
+     * @var string|null
+     */
+    private $sessionId;
+    public function __construct(?string $currentUserId = null, ?string $ipAddress = null, ?string $sessionId = null)
+    {
+        $this->currentUserId = $currentUserId;
+        $this->ipAddress = $ipAddress;
+        $this->sessionId = $sessionId;
     }
 
     public function getCurrentUserId(): ?string
@@ -42,7 +53,10 @@ final class UnleashContext
         return $this->customContext[$name];
     }
 
-    public function setCustomProperty(string $name, string $value): self
+    /**
+     * @return $this
+     */
+    public function setCustomProperty(string $name, string $value)
     {
         $this->customContext[$name] = $value;
 
@@ -54,7 +68,10 @@ final class UnleashContext
         return array_key_exists($name, $this->customContext);
     }
 
-    public function removeCustomProperty(string $name, bool $silent = true): self
+    /**
+     * @return $this
+     */
+    public function removeCustomProperty(string $name, bool $silent = true)
     {
         if (!$this->hasCustomProperty($name) && !$silent) {
             throw new InvalidValueException("The custom context value '{$name}' does not exist");

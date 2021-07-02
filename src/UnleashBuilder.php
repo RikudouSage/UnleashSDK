@@ -25,74 +25,119 @@ use Rikudou\Unleash\Strategy\UserIdStrategyHandler;
 #[Immutable]
 final class UnleashBuilder
 {
-    private ?string $appUrl = null;
+    /**
+     * @var string|null
+     */
+    private $appUrl;
 
-    private ?string $instanceId = null;
+    /**
+     * @var string|null
+     */
+    private $instanceId;
 
-    private ?string $appName = null;
+    /**
+     * @var string|null
+     */
+    private $appName;
 
-    private ?ClientInterface $httpClient = null;
+    /**
+     * @var \Psr\Http\Client\ClientInterface|null
+     */
+    private $httpClient;
 
-    private ?RequestFactoryInterface $requestFactory = null;
+    /**
+     * @var \Psr\Http\Message\RequestFactoryInterface|null
+     */
+    private $requestFactory;
 
-    private ?CacheInterface $cache = null;
+    /**
+     * @var \Psr\SimpleCache\CacheInterface|null
+     */
+    private $cache;
 
-    private ?int $cacheTtl = null;
+    /**
+     * @var int|null
+     */
+    private $cacheTtl;
 
     /**
      * @var array<string,string>
      */
-    private array $headers = [];
+    private $headers = [];
 
     /**
      * @var array<StrategyHandler>|null
      */
-    private ?array $strategies = null;
+    private $strategies;
 
+    /**
+     * @return $this
+     */
     #[Pure]
-    public static function create(): self
+    public static function create()
     {
         return new self();
     }
 
+    /**
+     * @return $this
+     */
     #[Pure]
-    public function withAppUrl(string $appUrl): self
+    public function withAppUrl(string $appUrl)
     {
         return $this->with('appUrl', $appUrl);
     }
 
+    /**
+     * @return $this
+     */
     #[Pure]
-    public function withInstanceId(string $instanceId): self
+    public function withInstanceId(string $instanceId)
     {
         return $this->with('instanceId', $instanceId);
     }
 
+    /**
+     * @return $this
+     */
     #[Pure]
-    public function withAppName(string $appName): self
+    public function withAppName(string $appName)
     {
         return $this->with('appName', $appName);
     }
 
+    /**
+     * @return $this
+     */
     #[Pure]
-    public function withHttpClient(ClientInterface $client): self
+    public function withHttpClient(ClientInterface $client)
     {
         return $this->with('httpClient', $client);
     }
 
+    /**
+     * @return $this
+     */
     #[Pure]
-    public function withRequestFactory(RequestFactoryInterface $requestFactory): self
+    public function withRequestFactory(RequestFactoryInterface $requestFactory)
     {
         return $this->with('requestFactory', $requestFactory);
     }
 
+    /**
+     * @return $this
+     */
     #[Pure]
-    public function withStrategies(StrategyHandler ...$strategies): self
+    public function withStrategies(StrategyHandler ...$strategies)
     {
         return $this->with('strategies', $strategies);
     }
 
+    /**
+     * @return $this
+     */
     #[Pure]
-    public function withCacheHandler(?CacheInterface $cache, ?int $timeToLive = null): self
+    public function withCacheHandler(?CacheInterface $cache, ?int $timeToLive = null)
     {
         $result = $this->with('cache', $cache);
         if ($timeToLive !== null) {
@@ -102,23 +147,30 @@ final class UnleashBuilder
         return $result;
     }
 
+    /**
+     * @return $this
+     */
     #[Pure]
-    public function withCacheTimeToLive(int $timeToLive): self
+    public function withCacheTimeToLive(int $timeToLive)
     {
         return $this->with('cacheTtl', $timeToLive);
     }
 
+    /**
+     * @return $this
+     */
     #[Pure]
-    public function withHeader(string $header, string $value): self
+    public function withHeader(string $header, string $value)
     {
         return $this->with('headers', array_merge($this->headers, [$header => $value]));
     }
 
     /**
      * @param array<string, string> $headers
+     * @return $this
      */
     #[Pure]
-    public function withHeaders(array $headers): self
+    public function withHeaders(array $headers)
     {
         return $this->with('headers', $headers);
     }
@@ -183,7 +235,11 @@ final class UnleashBuilder
         return new DefaultUnleash($strategies, $repository);
     }
 
-    private function with(string $property, mixed $value): self
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    private function with(string $property, $value)
     {
         $copy = clone $this;
         $copy->{$property} = $value;
