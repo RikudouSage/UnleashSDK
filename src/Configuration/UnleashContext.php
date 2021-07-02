@@ -4,13 +4,24 @@ namespace Rikudou\Unleash\Configuration;
 
 final class UnleashContext
 {
-    public function __construct(
-        private ?string $currentUserId = null,
-        private ?string $ipAddress = null,
-        private ?string $sessionId = null,
-    ) {
+    /**
+     * @var string|null
+     */
+    private $currentUserId;
+    /**
+     * @var string|null
+     */
+    private $ipAddress;
+    /**
+     * @var string|null
+     */
+    private $sessionId;
+    public function __construct(?string $currentUserId = null, ?string $ipAddress = null, ?string $sessionId = null)
+    {
+        $this->currentUserId = $currentUserId;
+        $this->ipAddress = $ipAddress;
+        $this->sessionId = $sessionId;
     }
-
     public function getCurrentUserId(): ?string
     {
         return $this->currentUserId;
