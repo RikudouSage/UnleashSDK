@@ -10,14 +10,21 @@ use Rikudou\Unleash\Strategy\StrategyHandler;
 final class DefaultUnleash implements Unleash
 {
     /**
+     * @var mixed[]
+     */
+    private $strategyHandlers;
+    /**
+     * @var \Rikudou\Unleash\Repository\UnleashRepository
+     */
+    private $repository;
+    /**
      * @param iterable<StrategyHandler> $strategyHandlers
      */
-    public function __construct(
-        private iterable $strategyHandlers,
-        private UnleashRepository $repository,
-    ) {
+    public function __construct(iterable $strategyHandlers, UnleashRepository $repository)
+    {
+        $this->strategyHandlers = $strategyHandlers;
+        $this->repository = $repository;
     }
-
     public function isEnabled(string $featureName, UnleashContext $context = null, bool $default = false): bool
     {
         if ($context === null) {
