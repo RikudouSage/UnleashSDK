@@ -15,16 +15,32 @@ use Rikudou\Unleash\Unleash;
 final class DefaultRegistrationService implements RegistrationService
 {
     /**
+     * @var \Psr\Http\Client\ClientInterface
+     */
+    private $httpClient;
+    /**
+     * @var \Psr\Http\Message\RequestFactoryInterface
+     */
+    private $requestFactory;
+    /**
+     * @var \Rikudou\Unleash\Configuration\UnleashConfiguration
+     */
+    private $configuration;
+    /**
+     * @var mixed[]
+     */
+    private $headers;
+    /**
      * @param array<string,string> $headers
      *
      * @internal
      */
-    public function __construct(
-        private ClientInterface $httpClient,
-        private RequestFactoryInterface $requestFactory,
-        private UnleashConfiguration $configuration,
-        private array $headers
-    ) {
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, UnleashConfiguration $configuration, array $headers)
+    {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->configuration = $configuration;
+        $this->headers = $headers;
     }
 
     /**
@@ -51,7 +67,7 @@ final class DefaultRegistrationService implements RegistrationService
                     return $strategyHandler->getStrategyName();
                 }, $strategyHandlers),
                 'started' => (new DateTimeImmutable())->format('c'),
-                'interval' => 10_000,
+                'interval' => 10000,
             ], JSON_THROW_ON_ERROR)));
         foreach ($this->headers as $name => $value) {
             $request = $request->withHeader($name, $value);

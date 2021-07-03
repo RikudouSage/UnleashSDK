@@ -11,16 +11,31 @@ use Rikudou\Unleash\Strategy\StrategyHandler;
 final class DefaultUnleash implements Unleash
 {
     /**
+     * @var mixed[]
+     */
+    private $strategyHandlers;
+    /**
+     * @var \Rikudou\Unleash\Repository\UnleashRepository
+     */
+    private $repository;
+    /**
+     * @var \Rikudou\Unleash\Client\RegistrationService
+     */
+    private $registrationService;
+    /**
      * @param iterable<StrategyHandler> $strategyHandlers
      *
      * @internal
      */
     public function __construct(
-        private iterable $strategyHandlers,
-        private UnleashRepository $repository,
-        private RegistrationService $registrationService,
+        iterable $strategyHandlers,
+        UnleashRepository $repository,
+        RegistrationService $registrationService,
         bool $autoregister
     ) {
+        $this->strategyHandlers = $strategyHandlers;
+        $this->repository = $repository;
+        $this->registrationService = $registrationService;
         if ($autoregister) {
             $this->register();
         }

@@ -10,8 +10,13 @@ use Rikudou\Unleash\Exception\MissingArgumentException;
 
 final class GradualRolloutUserIdStrategyHandler extends AbstractStrategyHandler
 {
-    public function __construct(private GradualRolloutStrategyHandler $rolloutStrategyHandler)
+    /**
+     * @var \Rikudou\Unleash\Strategy\GradualRolloutStrategyHandler
+     */
+    private $rolloutStrategyHandler;
+    public function __construct(GradualRolloutStrategyHandler $rolloutStrategyHandler)
     {
+        $this->rolloutStrategyHandler = $rolloutStrategyHandler;
     }
 
     /**
