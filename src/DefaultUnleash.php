@@ -12,22 +12,36 @@ use Rikudou\Unleash\Strategy\StrategyHandler;
 final class DefaultUnleash implements Unleash
 {
     /**
+     * @var mixed[]
+     */
+    private $strategyHandlers;
+    /**
+     * @var \Rikudou\Unleash\Repository\UnleashRepository
+     */
+    private $repository;
+    /**
+     * @var \Rikudou\Unleash\Client\RegistrationService
+     */
+    private $registrationService;
+    /**
+     * @var \Rikudou\Unleash\Metrics\MetricsHandler
+     */
+    private $metricsHandler;
+    /**
      * @param iterable<StrategyHandler> $strategyHandlers
      *
      * @internal
      */
-    public function __construct(
-        private iterable $strategyHandlers,
-        private UnleashRepository $repository,
-        private RegistrationService $registrationService,
-        bool $autoregister,
-        private MetricsHandler $metricsHandler,
-    ) {
+    public function __construct(iterable $strategyHandlers, UnleashRepository $repository, RegistrationService $registrationService, bool $autoregister, MetricsHandler $metricsHandler)
+    {
+        $this->strategyHandlers = $strategyHandlers;
+        $this->repository = $repository;
+        $this->registrationService = $registrationService;
+        $this->metricsHandler = $metricsHandler;
         if ($autoregister) {
             $this->register();
         }
     }
-
     public function isEnabled(string $featureName, UnleashContext $context = null, bool $default = false): bool
     {
         if ($context === null) {

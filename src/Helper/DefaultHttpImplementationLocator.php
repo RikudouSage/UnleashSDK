@@ -13,7 +13,7 @@ final class DefaultHttpImplementationLocator
     /**
      * @var array<string,string[]>
      */
-    private array $supportedPackages = [
+    private $supportedPackages = [
         'client' => [
             'guzzlehttp/guzzle',
             'symfony/http-client',
@@ -27,7 +27,7 @@ final class DefaultHttpImplementationLocator
     /**
      * @var array<string,array<string,array>>
      */
-    private array $defaultImplementations = [
+    private $defaultImplementations = [
         'client' => [
             Client::class => [],
             Psr18Client::class => [],
