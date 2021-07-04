@@ -10,16 +10,31 @@ use Rikudou\Unleash\Helper\StringStream;
 final class DefaultMetricsSender implements MetricsSender
 {
     /**
+     * @var \Psr\Http\Client\ClientInterface
+     */
+    private $httpClient;
+    /**
+     * @var \Psr\Http\Message\RequestFactoryInterface
+     */
+    private $requestFactory;
+    /**
+     * @var \Rikudou\Unleash\Configuration\UnleashConfiguration
+     */
+    private $configuration;
+    /**
+     * @var mixed[]
+     */
+    private $headers = [];
+    /**
      * @param array<string,string> $headers
      */
-    public function __construct(
-        private ClientInterface $httpClient,
-        private RequestFactoryInterface $requestFactory,
-        private UnleashConfiguration $configuration,
-        private array $headers = [],
-    ) {
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, UnleashConfiguration $configuration, array $headers = [])
+    {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->configuration = $configuration;
+        $this->headers = $headers;
     }
-
     public function sendMetrics(MetricsBucket $bucket): void
     {
         if (!$this->configuration->isMetricsEnabled()) {

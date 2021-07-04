@@ -20,18 +20,33 @@ use Rikudou\Unleash\Exception\HttpResponseException;
 final class DefaultUnleashRepository implements UnleashRepository
 {
     private const CACHE_KEY_FEATURES = 'rikudou.unleash.feature.list';
-
+    /**
+     * @var \Psr\Http\Client\ClientInterface
+     */
+    private $httpClient;
+    /**
+     * @var \Psr\Http\Message\RequestFactoryInterface
+     */
+    private $requestFactory;
+    /**
+     * @var \Rikudou\Unleash\Configuration\UnleashConfiguration
+     */
+    private $configuration;
+    /**
+     * @var mixed[]
+     */
+    private $headers = [];
     /**
      * @param array<string,string> $headers
      *
      * @internal
      */
-    public function __construct(
-        private ClientInterface $httpClient,
-        private RequestFactoryInterface $requestFactory,
-        private UnleashConfiguration $configuration,
-        private array $headers = [],
-    ) {
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, UnleashConfiguration $configuration, array $headers = [])
+    {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->configuration = $configuration;
+        $this->headers = $headers;
     }
 
     /**
@@ -134,23 +149,11 @@ final class DefaultUnleashRepository implements UnleashRepository
                 foreach ($variant['overrides'] ?? [] as $override) {
                     $overrides[] = new DefaultVariantOverride($override['contextName'], $override['values']);
                 }
-                $variants[] = new DefaultVariant(
-                    $variant['name'],
-                    true,
-                    $variant['weight'],
-                    $variant['stickiness'] ?? Stickiness::DEFAULT,
-                    isset($variant['payload'])
-                        ? new DefaultVariantPayload($variant['payload']['type'], $variant['payload']['value'])
-                        : null,
-                    $overrides,
-                );
+                $variants[] = new DefaultVariant($variant['name'], true, $variant['weight'], $variant['stickiness'] ?? Stickiness::DEFAULT, isset($variant['payload'])
+                    ? new DefaultVariantPayload($variant['payload']['type'], $variant['payload']['value'])
+                    : null, $overrides);
             }
-            $features[$feature['name']] = new DefaultFeature(
-                $feature['name'],
-                $feature['enabled'],
-                $strategies,
-                $variants,
-            );
+            $features[$feature['name']] = new DefaultFeature($feature['name'], $feature['enabled'], $strategies, $variants);
         }
 
         return $features;
