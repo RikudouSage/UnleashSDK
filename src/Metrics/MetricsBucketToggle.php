@@ -10,13 +10,24 @@ use Rikudou\Unleash\DTO\Variant;
  */
 final class MetricsBucketToggle
 {
-    public function __construct(
-        private Feature $feature,
-        private bool $success,
-        private ?Variant $variant,
-    ) {
+    /**
+     * @var \Rikudou\Unleash\DTO\Feature
+     */
+    private $feature;
+    /**
+     * @var bool
+     */
+    private $success;
+    /**
+     * @var \Rikudou\Unleash\DTO\Variant|null
+     */
+    private $variant;
+    public function __construct(Feature $feature, bool $success, ?Variant $variant)
+    {
+        $this->feature = $feature;
+        $this->success = $success;
+        $this->variant = $variant;
     }
-
     public function getFeature(): Feature
     {
         return $this->feature;
