@@ -13,12 +13,15 @@ final class UnleashConfiguration
     private int $metricsInterval = 30_000;
 
     private bool $metricsEnabled = true;
+    private string $url;
+    private string $appName;
+    private string $instanceId;
 
-    public function __construct(
-        private string $url,
-        private string $appName,
-        private string $instanceId
-    ) {
+    public function __construct(string $url, string $appName, string $instanceId)
+    {
+        $this->url = $url;
+        $this->appName = $appName;
+        $this->instanceId = $instanceId;
     }
 
     public function getCache(): ?CacheInterface
@@ -51,14 +54,20 @@ final class UnleashConfiguration
         return $this->ttl;
     }
 
-    public function setCache(?CacheInterface $cache): self
+    /**
+     * @return $this
+     */
+    public function setCache(?CacheInterface $cache)
     {
         $this->cache = $cache;
 
         return $this;
     }
 
-    public function setTtl(int $ttl): self
+    /**
+     * @return $this
+     */
+    public function setTtl(int $ttl)
     {
         $this->ttl = $ttl;
 
@@ -75,7 +84,10 @@ final class UnleashConfiguration
         return $this->metricsEnabled;
     }
 
-    public function setUrl(string $url): self
+    /**
+     * @return $this
+     */
+    public function setUrl(string $url)
     {
         $this->url = $url;
 
@@ -84,8 +96,9 @@ final class UnleashConfiguration
 
     /**
      * @codeCoverageIgnore
+     * @return $this
      */
-    public function setAppName(string $appName): self
+    public function setAppName(string $appName)
     {
         $this->appName = $appName;
 
@@ -94,8 +107,9 @@ final class UnleashConfiguration
 
     /**
      * @codeCoverageIgnore
+     * @return $this
      */
-    public function setInstanceId(string $instanceId): self
+    public function setInstanceId(string $instanceId)
     {
         $this->instanceId = $instanceId;
 
@@ -104,8 +118,9 @@ final class UnleashConfiguration
 
     /**
      * @codeCoverageIgnore
+     * @return $this
      */
-    public function setMetricsInterval(int $metricsInterval): self
+    public function setMetricsInterval(int $metricsInterval)
     {
         $this->metricsInterval = $metricsInterval;
 
@@ -114,8 +129,9 @@ final class UnleashConfiguration
 
     /**
      * @codeCoverageIgnore
+     * @return $this
      */
-    public function setMetricsEnabled(bool $metricsEnabled): self
+    public function setMetricsEnabled(bool $metricsEnabled)
     {
         $this->metricsEnabled = $metricsEnabled;
 

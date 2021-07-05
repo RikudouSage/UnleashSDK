@@ -13,24 +13,27 @@ use Rikudou\Unleash\Variant\VariantHandler;
 
 final class DefaultUnleash implements Unleash
 {
+    private iterable $strategyHandlers;
+    private UnleashRepository $repository;
+    private RegistrationService $registrationService;
+    private MetricsHandler $metricsHandler;
+    private VariantHandler $variantHandler;
     /**
      * @param iterable<StrategyHandler> $strategyHandlers
      *
      * @internal
      */
-    public function __construct(
-        private iterable $strategyHandlers,
-        private UnleashRepository $repository,
-        private RegistrationService $registrationService,
-        bool $autoregister,
-        private MetricsHandler $metricsHandler,
-        private VariantHandler $variantHandler,
-    ) {
+    public function __construct(iterable $strategyHandlers, UnleashRepository $repository, RegistrationService $registrationService, bool $autoregister, MetricsHandler $metricsHandler, VariantHandler $variantHandler)
+    {
+        $this->strategyHandlers = $strategyHandlers;
+        $this->repository = $repository;
+        $this->registrationService = $registrationService;
+        $this->metricsHandler = $metricsHandler;
+        $this->variantHandler = $variantHandler;
         if ($autoregister) {
             $this->register();
         }
     }
-
     public function isEnabled(string $featureName, UnleashContext $context = null, bool $default = false): bool
     {
         if ($context === null) {

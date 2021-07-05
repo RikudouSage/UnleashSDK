@@ -12,13 +12,17 @@ use Rikudou\Unleash\Enum\VariantPayloadType;
 
 final class DefaultVariantPayload implements VariantPayload
 {
+    private string $type;
+    private string $value;
     public function __construct(
-//        #[ExpectedValues(valuesFromClass: VariantPayloadType::class)]
-        private string $type,
-        private string $value,
-    ) {
+        //        #[ExpectedValues(valuesFromClass: VariantPayloadType::class)]
+        string $type,
+        string $value
+    )
+    {
+        $this->type = $type;
+        $this->value = $value;
     }
-
     /**
      * @codeCoverageIgnore
      */
@@ -40,11 +44,7 @@ final class DefaultVariantPayload implements VariantPayload
     {
         if ($this->type !== VariantPayloadType::JSON) {
             throw new LogicException(
-                sprintf(
-                    "Only payloads of type '%s' can be converted from json, this payload has type '%s'",
-                    VariantPayloadType::JSON,
-                    $this->type,
-                )
+                sprintf("Only payloads of type '%s' can be converted from json, this payload has type '%s'", VariantPayloadType::JSON, $this->type)
             );
         }
 

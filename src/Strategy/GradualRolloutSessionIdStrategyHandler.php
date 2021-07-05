@@ -9,8 +9,10 @@ use Rikudou\Unleash\Enum\Stickiness;
 
 final class GradualRolloutSessionIdStrategyHandler extends AbstractStrategyHandler
 {
-    public function __construct(private GradualRolloutStrategyHandler $rolloutStrategyHandler)
+    private GradualRolloutStrategyHandler $rolloutStrategyHandler;
+    public function __construct(GradualRolloutStrategyHandler $rolloutStrategyHandler)
     {
+        $this->rolloutStrategyHandler = $rolloutStrategyHandler;
     }
 
     public function isEnabled(Strategy $strategy, UnleashContext $context): bool

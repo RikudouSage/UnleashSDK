@@ -14,17 +14,21 @@ use Rikudou\Unleash\Unleash;
 
 final class DefaultRegistrationService implements RegistrationService
 {
+    private ClientInterface $httpClient;
+    private RequestFactoryInterface $requestFactory;
+    private UnleashConfiguration $configuration;
+    private array $headers;
     /**
      * @param array<string,string> $headers
      *
      * @internal
      */
-    public function __construct(
-        private ClientInterface $httpClient,
-        private RequestFactoryInterface $requestFactory,
-        private UnleashConfiguration $configuration,
-        private array $headers
-    ) {
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, UnleashConfiguration $configuration, array $headers)
+    {
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
+        $this->configuration = $configuration;
+        $this->headers = $headers;
     }
 
     /**

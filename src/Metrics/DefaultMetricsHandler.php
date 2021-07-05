@@ -10,11 +10,13 @@ use Rikudou\Unleash\DTO\Variant;
 final class DefaultMetricsHandler implements MetricsHandler
 {
     private const CACHE_KEY_BUCKET = 'rikudou.unleash.bucket';
+    private MetricsSender $metricsSender;
+    private UnleashConfiguration $configuration;
 
-    public function __construct(
-        private MetricsSender $metricsSender,
-        private UnleashConfiguration $configuration
-    ) {
+    public function __construct(MetricsSender $metricsSender, UnleashConfiguration $configuration)
+    {
+        $this->metricsSender = $metricsSender;
+        $this->configuration = $configuration;
     }
 
     public function handleMetrics(Feature $feature, bool $successful, Variant $variant = null): void
