@@ -10,11 +10,19 @@ use Rikudou\Unleash\DTO\Variant;
 final class DefaultMetricsHandler implements MetricsHandler
 {
     private const CACHE_KEY_BUCKET = 'rikudou.unleash.bucket';
+    /**
+     * @var \Rikudou\Unleash\Metrics\MetricsSender
+     */
+    private $metricsSender;
+    /**
+     * @var \Rikudou\Unleash\Configuration\UnleashConfiguration
+     */
+    private $configuration;
 
-    public function __construct(
-        private MetricsSender $metricsSender,
-        private UnleashConfiguration $configuration
-    ) {
+    public function __construct(MetricsSender $metricsSender, UnleashConfiguration $configuration)
+    {
+        $this->metricsSender = $metricsSender;
+        $this->configuration = $configuration;
     }
 
     public function handleMetrics(Feature $feature, bool $successful, Variant $variant = null): void
@@ -48,7 +56,7 @@ final class DefaultMetricsHandler implements MetricsHandler
             $bucketStartDate = $bucket->getStartDate();
             $nowMilliseconds = (int) (microtime(true) * 1000);
             $startDateMilliseconds = (int) (
-                ($bucketStartDate->getTimestamp() + (int) $bucketStartDate->format('v') / 1000) * 1_000
+                ($bucketStartDate->getTimestamp() + (int) $bucketStartDate->format('v') / 1000) * 1000
             );
             $diff = $nowMilliseconds - $startDateMilliseconds;
 
