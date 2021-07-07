@@ -9,9 +9,10 @@ use Rikudou\Unleash\Stickiness\StickinessCalculator;
 
 final class GradualRolloutStrategyHandler extends AbstractStrategyHandler
 {
-    public function __construct(
-        private StickinessCalculator $stickinessCalculator
-    ) {
+    private StickinessCalculator $stickinessCalculator;
+    public function __construct(StickinessCalculator $stickinessCalculator)
+    {
+        $this->stickinessCalculator = $stickinessCalculator;
     }
 
     public function isEnabled(Strategy $strategy, Context $context): bool
