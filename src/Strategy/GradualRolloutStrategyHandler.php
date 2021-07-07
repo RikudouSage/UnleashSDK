@@ -9,9 +9,13 @@ use Rikudou\Unleash\Stickiness\StickinessCalculator;
 
 final class GradualRolloutStrategyHandler extends AbstractStrategyHandler
 {
-    public function __construct(
-        private StickinessCalculator $stickinessCalculator
-    ) {
+    /**
+     * @var \Rikudou\Unleash\Stickiness\StickinessCalculator
+     */
+    private $stickinessCalculator;
+    public function __construct(StickinessCalculator $stickinessCalculator)
+    {
+        $this->stickinessCalculator = $stickinessCalculator;
     }
 
     public function isEnabled(Strategy $strategy, Context $context): bool
@@ -26,10 +30,10 @@ final class GradualRolloutStrategyHandler extends AbstractStrategyHandler
 
         switch (strtolower($stickiness)) {
             case Stickiness::DEFAULT:
-                $id = $context->getCurrentUserId() ?? $context->getSessionId() ?? random_int(1, 100_000);
+                $id = $context->getCurrentUserId() ?? $context->getSessionId() ?? random_int(1, 100000);
                 break;
             case Stickiness::RANDOM:
-                $id = random_int(1, 100_000);
+                $id = random_int(1, 100000);
                 break;
             default:
                 $id = $context->findContextValue($stickiness);
