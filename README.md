@@ -1,3 +1,4 @@
+# This branch is auto generated
 # This package got migrated to the official namespace at [github.com/Unleash/unleash-client-php](https://github.com/Unleash/unleash-client-php) and will no longer be updated here.
 
 [![Tests](https://github.com/RikudouSage/UnleashSDK/actions/workflows/tests.yaml/badge.svg)](https://github.com/RikudouSage/UnleashSDK/actions/workflows/tests.yaml)
